@@ -57,9 +57,10 @@ var Engine = (function(global) {
          * function again as soon as the browser is able to draw another frame.
          */
         win.requestAnimationFrame(main);
+       // console.log("Enemy1 x: "+ allEnemies[0].x);
     }
 
-    /* This function does some initial setup that should only occur once,
+    /** This function does some initial setup that should only occur once,
      * particularly setting the lastTime variable that is required for the
      * game loop.
      */
@@ -69,7 +70,7 @@ var Engine = (function(global) {
         main();
     }
 
-    /* This function is called by main (our game loop) and itself calls all
+    /** This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how
      * you implement your collision detection (when two entities occupy the
      * same space, for instance when your character should die), you may find
@@ -83,7 +84,7 @@ var Engine = (function(global) {
         // checkCollisions();
     }
 
-    /* This is called by the update function and loops through all of the
+    /**This is called by the update function and loops through all of the
      * objects within your allEnemies array as defined in app.js and calls
      * their update() methods. It will then call the update function for your
      * player object. These update methods should focus purely on updating
@@ -94,7 +95,7 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
-        player.update();
+        player.update(dt);
     }
 
     /* This function initially draws the "game level", it will then call

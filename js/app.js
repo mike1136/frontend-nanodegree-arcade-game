@@ -1,58 +1,102 @@
-// Enemies our player must avoid
-class Enemy {
+/**
+ *Main prototype to all elements that appars in game.Holds location and position
+ *
+ * @class Entities
+ */
+class Entities {
+    constructor(sprite, x, y) {
+        this.sprite = sprite;
+        this.x = x;
+        this.y = y;
+    }
+    /**
+     *
+     *
+     * @param {*} dt Updates the infor according to the time used for smooth transition
+     * @memberof Entities
+     */
 
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    constructor(sprite = 'images/enemy-bug.png', x = 1, y = 2.3, speed = 400) {
+    /**Draw the entity on the screen, required method for game
+     * 
+     */
+    render() {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
+}
+class Enemy extends Entities {
+    constructor(sprite = 'images/enemy-bug.png', x, y, speed) {
+        super(sprite, x, y)
         this.sprite = sprite;
         this.x = x;
         this.y = y;
         this.speed = speed;
     }
-    /**
-     * Update the enemy's position, required method for game by multiplying dt by speed
-     * @param {Date} dt a time delta between ticks
-     */
     update(dt) {
-        this.x += (dt * this.speed);
+        if (this.x < 580) {
+            this.x += (dt * this.speed);
+           
+        } else {
+            this.x = -500;
+        }
+if((this.x+10>player.x && this.x-10>player.x)&&(this.y+10>player.y && this.y-10>player.y))
+{
+    console.log('Collision!');
+}
+      
+    }
+}
+
+class Player extends Entities {
+    constructor(sprite = 'images/char-boy.png', x, y) {
+        super(sprite, x, y);
+        this.sprite = sprite;
+        this.x = x;
+        this.y = y;
+    }
+    update(dt) {
 
     }
-    /**Draw the enemy on the screen, required method for game
-     * 
-     */
-    render() {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y * 25);
+    handleInput(pressedKey) {
+        switch (pressedKey) {
+            case 'up':
+                if (this.y > -10) {
+                    this.y -= 85;
+                }
+                break;
+            case 'down':
+                if (this.y < 410) {
+                    this.y += 85;
+                }
+                break;
+
+            case 'left':
+            if(this.x>0)
+            {
+                this.x -= 100;
+            }
+                break;
+            case 'right':
+            if(this.x<400)
+            {
+                this.x += 100;
+            }
+                break;
+        }
+        console.log("x: " + this.x + ", y:" + this.y);
     }
-};
+}
 
-
-
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
-class playerP {
-    constructor() {}
-    update() {}
-    render() {}
-    handleInput() {}
-};
-
-
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-var enemy1 = new Enemy();
-var allEnemies = [enemy1];
+var enemy1 = new Enemy(undefined, -500, 58, 400);
+var enemy2 = new Enemy(undefined, -500, 136, 310);
+var enemy3 = new Enemy(undefined, -500, 220, 200);
+var allEnemies = [enemy1, enemy2, enemy3];
 console.log(enemy1.sprite);
-var player = new playerP();
+var player = new Player(undefined, 200, 410, 1);
+console.log(player.sprite);
 
-
-
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+/** This listens for key presses and sends the keys to the
+ *  Player.handleInput() method.
+ */
 document.addEventListener('keyup', function (e) {
     var allowedKeys = {
         37: 'left',
@@ -62,5 +106,5 @@ document.addEventListener('keyup', function (e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
-    console.log(e.keyCode);
+    console.log(allowedKeys[e.keyCode]);
 });
