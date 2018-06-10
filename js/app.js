@@ -11,6 +11,7 @@ var GAMESTATE = {
 Object.freeze(GAMESTATE);
 var gameState = GAMESTATE.NOT_STARTED;
 
+
 /**
  *Main prototype to all elements that appars in game. Holds location and position
  *
@@ -76,7 +77,12 @@ class Player extends Entities {
         this.sprite = sprite;
         this.x = x;
         this.y = y;
+        this.characterSprites = ['char-boy.png','char-cat-girl.png','char-horn-girl.png','char-pink-girl.png','char-princess-girl.png'];
+        this.currentSprite = 0;
+       
     }
+   
+
     update(dt) {
 
     }
@@ -86,6 +92,8 @@ class Player extends Entities {
             
                 if (gameState === GAMESTATE.NOT_STARTED)
                 {
+                    player.x = 200;
+                    player.y =410;
                     gameState=GAMESTATE.RUNNING;
                 }
             break;
@@ -120,6 +128,13 @@ class Player extends Entities {
                         this.x -= 100;
                     }
                 }
+                else if (gameState == GAMESTATE.PAUSED)
+                {
+                     if(player.currentSprite===0)
+                     {
+                         player.currentSprite = player.characterSprites.length;             
+                     }
+                }
                 break;
             case 'right':
                 if (gameState == GAMESTATE.RUNNING) {
@@ -127,9 +142,17 @@ class Player extends Entities {
                         this.x += 100;
                     }
                 }
+                else if (gameState == GAMESTATE.PAUSED)
+                {
+
+                }
                 break;
         }
         console.log("x: " + this.x + ", y:" + this.y);
+    }
+    changeSprite()
+    {
+      this.sprite=this.characterSprites[this.currentSprite];
     }
 }
 
@@ -141,15 +164,18 @@ class GUIObject extends Entities {
         this.y = y;
     }
 }
-var enemy1 = new Enemy(undefined, -500, 58, 400);
-var enemy2 = new Enemy(undefined, -500, 136, 310);
-var enemy3 = new Enemy(undefined, -500, 220, 200);
-var allEnemies = [enemy1, enemy2, enemy3];
-var player = new Player(undefined, 200, 410, 1);
+
+var enemy1 = new Enemy(undefined, -500, 58, 344);
+var enemy2 = new Enemy(undefined, -500, 220, 253);
+var enemy3 = new Enemy(undefined, -500, 136, 156);
+var enemy4 = new Enemy(undefined, -500, 136, 317);
+var enemy5 = new Enemy(undefined, -500, 220, 569);
+var enemy6 = new Enemy(undefined, -500, 58, 261);
+var allEnemies = [enemy1, enemy2, enemy3,enemy4,enemy5,enemy6];
+var player = new Player(undefined, 200, 200);
 var playButton = new GUIObject('images/play2.png', 100, 300);
-
-var guiInterface = [playButton];
-
+var choser=new GUIObject('images/Selector.png',200,200);
+var guiInterface = [playButton,choser,player];
 
 /** This listens for key presses and sends the keys to the
  *  Player.handleInput() method.
