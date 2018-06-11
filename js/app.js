@@ -77,11 +77,11 @@ class Player extends Entities {
         this.sprite = sprite;
         this.x = x;
         this.y = y;
-        this.characterSprites = ['char-boy.png','char-cat-girl.png','char-horn-girl.png','char-pink-girl.png','char-princess-girl.png'];
+        this.characterSprites = ['images/char-boy.png', 'images/char-cat-girl.png', 'images/char-horn-girl.png', 'images/char-pink-girl.png', 'images/char-princess-girl.png'];
         this.currentSprite = 0;
-       
+
     }
-   
+
 
     update(dt) {
 
@@ -89,14 +89,13 @@ class Player extends Entities {
     handleInput(pressedKey) {
         switch (pressedKey) {
             case 'enter':
-            
-                if (gameState === GAMESTATE.NOT_STARTED)
-                {
+
+                if (gameState === GAMESTATE.NOT_STARTED) {
                     player.x = 200;
-                    player.y =410;
-                    gameState=GAMESTATE.RUNNING;
+                    player.y = 410;
+                    gameState = GAMESTATE.RUNNING;
                 }
-            break;
+                break;
 
             case 'escape':
                 if (gameState == GAMESTATE.RUNNING) {
@@ -123,17 +122,20 @@ class Player extends Entities {
                 break;
 
             case 'left':
+
                 if (gameState == GAMESTATE.RUNNING) {
                     if (this.x > 0) {
                         this.x -= 100;
                     }
-                }
-                else if (gameState == GAMESTATE.PAUSED)
-                {
-                     if(player.currentSprite===0)
-                     {
-                         player.currentSprite = player.characterSprites.length;             
-                     }
+                } else if (gameState == GAMESTATE.NOT_STARTED) {
+                    console.log(player.currentSprite);
+                    if (player.currentSprite == 0) {
+                        player.currentSprite = (player.characterSprites.length-1);
+                    } else {
+                        player.currentSprite--;
+                    }
+                    player.changeSprite();
+
                 }
                 break;
             case 'right':
@@ -141,18 +143,22 @@ class Player extends Entities {
                     if (this.x < 400) {
                         this.x += 100;
                     }
-                }
-                else if (gameState == GAMESTATE.PAUSED)
-                {
+                } else if (gameState == GAMESTATE.NOT_STARTED) {
+                   
+                    if (player.currentSprite ===player.characterSprites.length-1) {
+                        player.currentSprite =0;
+                    } else {
+                        player.currentSprite++;
+                    }
+                    player.changeSprite();
 
                 }
                 break;
         }
         console.log("x: " + this.x + ", y:" + this.y);
     }
-    changeSprite()
-    {
-      this.sprite=this.characterSprites[this.currentSprite];
+    changeSprite() {
+        this.sprite = this.characterSprites[this.currentSprite];
     }
 }
 
@@ -171,18 +177,18 @@ var enemy3 = new Enemy(undefined, -500, 136, 156);
 var enemy4 = new Enemy(undefined, -500, 136, 317);
 var enemy5 = new Enemy(undefined, -500, 220, 569);
 var enemy6 = new Enemy(undefined, -500, 58, 261);
-var allEnemies = [enemy1, enemy2, enemy3,enemy4,enemy5,enemy6];
+var allEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5, enemy6];
 var player = new Player(undefined, 200, 200);
 var playButton = new GUIObject('images/play2.png', 100, 300);
-var choser=new GUIObject('images/Selector.png',200,200);
-var guiInterface = [playButton,choser,player];
+var choser = new GUIObject('images/Selector.png', 200, 200);
+var guiInterface = [playButton, choser, player];
 
 /** This listens for key presses and sends the keys to the
  *  Player.handleInput() method.
  */
 document.addEventListener('keyup', function (e) {
     var allowedKeys = {
-        13:'enter',
+        13: 'enter',
         27: 'escape',
         37: 'left',
         38: 'up',
