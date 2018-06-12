@@ -25,6 +25,7 @@ var Engine = (function (global) {
         lastTime;
 
 
+
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
@@ -33,7 +34,7 @@ var Engine = (function (global) {
      * and handles properly calling the update and render methods.
      */
     function main() {
-       
+
 
         /* Get our time delta information which is required if your game
          * requires smooth animation. Because everyone's computer processes
@@ -81,13 +82,13 @@ var Engine = (function (global) {
      * on the entities themselves within your app.js file).
      */
     function update(dt) {
-        if (gameState !== GAMESTATE.NOT_STARTED && gameState !== GAMESTATE.PAUSED) {
-       
-        updateEntities(dt);
-        // checkCollisions();
-        }
-    }
+        if (gameState !== GAMESTATE.NOT_STARTED && gameState !== GAMESTATE.PAUSED && gameState !== GAMESTATE.WON) {
 
+            updateEntities(dt);
+            // checkCollisions();
+        }
+
+    }
     /**This is called by the update function and loops through all of the
      * objects within your allEnemies array as defined in app.js and calls
      * their update() methods. It will then call the update function for your
@@ -96,15 +97,16 @@ var Engine = (function (global) {
      * render methods.
      */
     function updateEntities(dt) {
-      
-            allEnemies.forEach(function (enemy) {
-                enemy.update(dt);
-            });
-            player.update(dt);
-        }
-    
 
-    /* This function initially draws the "game level", it will then call
+        allEnemies.forEach(function (enemy) {
+            enemy.update(dt);
+        });
+        player.update(dt);
+    }
+
+
+
+    /** This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every
      * game tick (or loop of the game engine) because that's how games work -
      * they are flipbooks creating the illusion of animation but in reality
@@ -146,11 +148,15 @@ var Engine = (function (global) {
             }
         }
         if (gameState !== GAMESTATE.NOT_STARTED) {
-            renderEntities(); 
-        }
-        else
-        {
+            renderEntities();
+            if (gameState === GAMESTATE.WON) {
+                wonText.render();
+                deathText.render();
+                restartText.render();
+            }
+        } else {
             renderMenu();
+            instructionText.render();
         }
 
     }
@@ -158,6 +164,7 @@ var Engine = (function (global) {
     function renderMenu() {
         guiInterface.forEach(function (guiElement) {
             guiElement.render();
+
         });
     }
     /** = This function is called by the render function and is called on each game
@@ -178,13 +185,7 @@ var Engine = (function (global) {
 
     }
 
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
-     */
-    function reset() {
 
-    }
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
@@ -200,7 +201,7 @@ var Engine = (function (global) {
         'images/Selector.png',
         'images/char-cat-girl.png',
         'images/char-horn-girl.png',
-        'images/char-pink-girl.png', 
+        'images/char-pink-girl.png',
         'images/char-princess-girl.png'
     ]);
 
