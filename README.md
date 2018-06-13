@@ -20,5 +20,9 @@ For detailed instructions on how to get started, check out this [guide](https://
  IE 9.0
  Firefox 2.0
  Safari 3.1	
- Opera 9.0  
+ Opera 9.0 
+
+# How to Run
+
+Open the index.html file in a compatible browser.
 
